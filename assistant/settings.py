@@ -2,6 +2,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 import os
 import dj_database_url
+from corsheaders.defaults import default_headers
 
 load_dotenv()
 
@@ -22,7 +23,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
@@ -91,7 +91,11 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CORS settings
-CORS_ALLOW_ALL_ORIGINS = True  # Keep this True in dev
+CORS_ALLOWED_ORIGINS = [
+    "https://ai-cooking-assistant-frontend.vercel.app",
+]
+CORS_ALLOW_CREDENTIALS = True
+
 # OR restrict it:
 # CORS_ALLOWED_ORIGINS = [
 #     "http://localhost:3000",
@@ -107,3 +111,6 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ],
 }
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    'content-type',
+]
