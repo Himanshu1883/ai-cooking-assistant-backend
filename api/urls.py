@@ -13,6 +13,6 @@ urlpatterns = [
     path('auth/signup/', views.signup_user, name='signup'),
     path('auth/login/', views.login_user, name='login'),
     path('generate_recipe/', generate_recipe, name='generate_recipe'),
-    # path('recipes/', views.ai_recipe, name='ai_recipe'),
-    path('history/', views.get_history, name='get_history'),
+    path('recipes/', views.ai_recipe, name='ai_recipe'),
+    path('/history/', views.get_history, name='get_history'),
 ]

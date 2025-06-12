@@ -14,10 +14,6 @@ from pathlib import Path
 from dotenv import load_dotenv
 import os
 import dj_database_url
-from decouple import config
-from decouple import config, UndefinedValueError
-
-
 
 load_dotenv()
 OPENAI_API_KEY = os.getenv("GEMINI_API_KEY")
@@ -30,14 +26,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = 'django-insecure-4qy6_h2fz3kz&pm5%*8o&w(ytkvt=@$4%77$f%n5m8^6&z*u+x'
 
-DEBUG = config('DEBUG', default=False, cast=bool)
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = False
 
-ALLOWED_HOSTS = ['ai-cooking-assistant.onrender.com',
-    'ai-cooking-assistant-olive.vercel.app',
-    'localhost',
-    '127.0.0.1',    ]
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -57,6 +51,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -91,19 +86,17 @@ WSGI_APPLICATION = 'assistant.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default=os.environ.get('DATABASE_URL')
+    )
 }
-
-# If DATABASE_URL exists (on Render), override with PostgreSQL
-try:
-    DATABASES['default'] = dj_database_url.config(conn_max_age=600)
-except UndefinedValueError:
-    pass
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -140,7 +133,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -150,7 +142,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",'https://ai-cooking-assistant.onrender.com','https://ai-cooking-assistant-olive.vercel.app'
+    "http://localhost:3000",
 ]
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -160,3 +152,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ],
 }
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+
