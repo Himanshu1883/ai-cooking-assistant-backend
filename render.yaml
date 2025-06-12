@@ -1,0 +1,18 @@
+  services:
+  - type: web
+    name: ai-cooking-assistant-backend
+    env: python
+    plan: free
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn assistant.wsgi:application"
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: SECRET_KEY
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: DJANGO_SETTINGS_MODULE
+        value: assistant.settings
+      - key: PYTHON_VERSION
+        value: 3.10
