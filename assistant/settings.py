@@ -9,7 +9,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Load environment variables
 SECRET_KEY = os.environ.get('SECRET_KEY')
-DEBUG = os.environ.get('DEBUG') == 'True'
+DEBUG = True
 OPENAI_API_KEY = os.getenv("GEMINI_API_KEY")
 
 ALLOWED_HOSTS = ['*']  # Use specific domain in production if needed
