@@ -13,3 +13,4 @@ frontend/build/
 # Others
 .DS_Store
 .env
+.env 

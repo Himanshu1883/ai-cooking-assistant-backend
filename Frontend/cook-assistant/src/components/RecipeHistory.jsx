@@ -23,7 +23,7 @@ const RecipeHistory = () => {
           },
         });
 
-        setHistory(response.data);
+        setHistory(response.data.history);
       } catch (error) {
         console.error("Error fetching history:", error);
         alert("Failed to load recipe history.");
