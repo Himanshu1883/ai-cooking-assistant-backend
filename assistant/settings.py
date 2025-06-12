@@ -15,6 +15,8 @@ from dotenv import load_dotenv
 import os
 import dj_database_url
 from decouple import config
+from decouple import config, UndefinedValueError
+
 
 
 load_dotenv()
@@ -32,7 +34,10 @@ SECRET_KEY = config('SECRET_KEY')
 
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = ['localhost','AI-cooking-assistant.onrender.com']
+ALLOWED_HOSTS = ['ai-cooking-assistant.onrender.com',
+    'ai-cooking-assistant-olive.vercel.app',
+    'localhost',
+    '127.0.0.1',    ]
 
 
 # Application definition
@@ -87,8 +92,17 @@ WSGI_APPLICATION = 'assistant.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.config(default=config('DATABASE_URL'))
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
+
+# If DATABASE_URL exists (on Render), override with PostgreSQL
+try:
+    DATABASES['default'] = dj_database_url.config(conn_max_age=600)
+except UndefinedValueError:
+    pass
 
 
 # Password validation
@@ -136,7 +150,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",'https://ai-cooking-assistant.onrender.com/','https://ai-cooking-assistant-olive.vercel.app/'
+    "http://localhost:3000",'https://ai-cooking-assistant.onrender.com','https://ai-cooking-assistant-olive.vercel.app'
 ]
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
