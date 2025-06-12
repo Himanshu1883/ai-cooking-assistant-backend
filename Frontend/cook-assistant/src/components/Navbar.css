@@ -1,0 +1,33 @@
+.glow-text {
+    text-shadow: 0 0 8px #ffc107, 0 0 15px #ffeb3b;
+    transition: 0.3s ease;
+}
+
+.glow-text:hover {
+    color: #fff;
+    text-shadow: 0 0 10px #ffc107, 0 0 20px #ffeb3b;
+}
+
+.nav-link {
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.nav-link.hover-underline::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2px;
+    width: 0%;
+    background: #ffc107;
+    transition: 0.3s ease;
+}
+
+.nav-link.hover-underline:hover::after {
+    width: 100%;
+}
+
+.nav-link:hover {
+    color: #ffc107 !important;
+}
