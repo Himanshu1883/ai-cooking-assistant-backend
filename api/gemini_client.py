@@ -5,7 +5,7 @@ genai.configure(api_key="AIzaSyBHJ2RNUL84ybnWEOtpzmqLc-qh9taBns0")
 
 # Use a valid model name
 model = genai.GenerativeModel(
-    model_name="models/gemini-1.5-flash-001",  # Updated model
+    model_name="models/gemini-1.5-flash",  # Updated model
     generation_config={
         "temperature": 0.7,
         "top_p": 1,
